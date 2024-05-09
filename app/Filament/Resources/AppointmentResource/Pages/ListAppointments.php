@@ -19,10 +19,10 @@ class ListAppointments extends ListRecords
         return [
             Actions\CreateAction::make()
             ->label('Add new Appointment')
-            // ->visible(function () {
-            //     $user = Auth::user();
-            //     return $user->role->name === 'Patient' ;
-            // })
+            ->visible(function () {
+                $user = Auth::user();
+                return $user->role->name === 'Patient' ;
+            })
         ];
     }
     protected function getHeaderWidgets(): array
@@ -31,28 +31,28 @@ class ListAppointments extends ListRecords
             AppointmentResource\Widgets\AppointmentStatsOverview::class,
         ];
     }
-    public function getTabs(): array
-    {
-        $currentDate = Carbon::now();
-        $tommorrow = $currentDate->copy()->addDay();
-        $addWeek = $currentDate->copy()->addWeek();
-        $nextMonth = $currentDate->copy()->addMonth();
+    // public function getTabs(): array
+    // {
+    //     $currentDate = Carbon::today();
+    //     $tommorrow = $currentDate->copy()->addDay();
+    //     $addWeek = $currentDate->copy()->addWeek();
+    //     $nextMonth = $currentDate->copy()->addMonth();
 
-        return [
-            'all' => Tab::make(),
-            'Today' => Tab::make()
+    //     return [
+    //         'all' => Tab::make(),
+    //         'Today' => Tab::make()
 
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereDate('date', $currentDate->toDateString())),
-                // ->hide(function () {
-                //     $user = Auth::user();
-                //     return $user->role->name === 'Staff' || $user->role->name === 'Admin';
-                // }),
-            'Tommorrow' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereDate('date', $tommorrow->toDateString())),
-            'Next Week' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereDate('date', $addWeek->toDateString())),
-            'Next Month' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereDate('date', $nextMonth->toDateString())),
-        ];
-    }
+    //             ->modifyQueryUsing(fn (Builder $query) => $query->whereDate('date', $currentDate->toDateString())),
+    //             // ->hide(function () {
+    //             //     $user = Auth::user();
+    //             //     return $user->role->name === 'Staff' || $user->role->name === 'Admin';
+    //             // }),
+    //         'Tommorrow' => Tab::make()
+    //             ->modifyQueryUsing(fn (Builder $query) => $query->whereDate('date', $tommorrow->toDateString())),
+    //         'Next Week' => Tab::make()
+    //             ->modifyQueryUsing(fn (Builder $query) => $query->whereDate('date', $addWeek->toDateString())),
+    //         'Next Month' => Tab::make()
+    //             ->modifyQueryUsing(fn (Builder $query) => $query->whereDate('date', $nextMonth->toDateString())),
+    //     ];
+    // }
 }

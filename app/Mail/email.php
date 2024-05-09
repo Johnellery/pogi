@@ -28,7 +28,7 @@ class email extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Approved',
+            subject: 'A.M. Santos Dental Clinic',
         );
     }
 

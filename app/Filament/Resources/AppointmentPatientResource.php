@@ -64,115 +64,30 @@ class AppointmentPatientResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make([
-                    Wizard::make([
-                        Wizard\Step::make('Personal Information')
-                        ->icon('heroicon-o-user')
-                            ->schema([
                                 Forms\Components\Hidden::make('user_id')
                                 ->default($user->id),
-                                Forms\Components\TextInput::make('first')
-                                ->minLength(2)
-                                ->dehydrateStateUsing(fn (string $state): string => ucwords($state))
-                                ->maxLength(255)
-                                ->required()
-                                ->placeholder('Enter your First name')
-                                ->label('First name'),
-                                Forms\Components\TextInput::make('middle')
-                                ->minLength(2)
-                                ->placeholder('Enter your Middle name')
-                                ->maxLength(255)
-                                ->label('Middle name (Optional)'),
-                                Forms\Components\TextInput::make('last')
-                                ->minLength(2)
-                                ->maxLength(255)
-                                ->placeholder('Enter your Last name')
-                                ->dehydrateStateUsing(fn (string $state): string => ucwords($state))
-                                ->required()
-                                ->label('Last name')
-                                ->afterStateUpdated(function ($set, $get) {
-                                    $first = $get('first');
-                                    $middle = $get('middle');
-                                    $last = $get('last');
-
-                                    if ($middle !== null) {
-                                        $fullname = $first . ' ' . $middle . ' ' . $last;
-                                    } else {
-                                        $fullname = $first . ' ' . $last;
-                                    }
-
-                                    $set('fullname', $fullname);
-                                }),
+                                Forms\Components\Hidden::make('first')
+                                ->default($user->first),
+                                Forms\Components\Hidden::make('middle')
+                                ->default($user->middle),
+                                Forms\Components\Hidden::make('last')
+                                ->default($user->last),
                                 Forms\Components\Hidden::make('fullname')
-                                ->reactive(),
-                                Forms\Components\TextInput::make('age')
-                                ->required()
-                                ->placeholder('Enter your Age')
-                                ->rule(rule:'numeric')
-                                ->label('Age'),
-                                Forms\Components\Select::make('gender')
-                                ->options([
-                                    'Male' => 'Male',
-                                    'Female' => 'Female'
-                                    ])
-                                ->native(false)
-                                ->required()
-                                ->preload()
-                                ->placeholder('Select a Gender')
-                                ->label('Gender'),
-                                Forms\Components\TextInput::make('phone')
-                                ->minLength(2)
-                                ->rule('numeric')
-                                ->placeholder('Enter your Contact Number')
-                                ->required()
-                                ->label('Contact Number'),
-                            ])->columns(3)
-                            ,
-                        Wizard\Step::make('Address')
-                        ->icon('heroicon-s-map-pin')
-                            ->schema([
-                                Forms\Components\Select::make('province')
-                                ->reactive()
-                                ->required()
-                                ->preload()
-                                ->placeholder('Select your Province')
-                                ->native(false)
-                                ->label('Province Name')
-                                ->options(function () {
-                                    return Philprovince::all()->pluck('provDesc', 'provDesc');
-                                }),
-                                Forms\Components\Select::make('city')
-                                ->reactive()
-                                ->placeholder('Select your City/Municipality')
-                                ->preload()
-                                ->required()
-                                ->native(false)
-                                ->label('City/Municipality Name')
-                                ->options(function (callable $get) {
-                                    $provCode = optional(Philprovince::where('provDesc', $get('province'))->first());
-                                    return Philmuni::where('provCode', '=', $provCode->provCode ?? '')->pluck('citymunDesc', 'citymunDesc');
-                                }),
-                            Forms\Components\Select::make('barangay')
-                                ->label('Barangay Name')
-                                ->preload()
-                                ->required()
-                                ->placeholder('Select your Barangay')
-                                ->native(false)
-                                ->options(function (callable $get) {
-                                    $provCode = optional(Philprovince::where('provDesc', $get('province'))->first());
-                                    $muniCode = optional(Philmuni::where('provCode', '=', $provCode->provCode ?? '')->where('citymunDesc', $get('city'))->first());
-                                    return Philbrgy::where('citymunCode', '=', $muniCode->citymunCode ?? '')->pluck('brgyDesc', 'brgyDesc');
-                                }),
-                            Forms\Components\TextInput::make('unit')
-                                ->minLength(2)
-                                ->placeholder('Enter the Unit no., floor, building, street')
-                                ->maxLength(255)
-                                ->required()
-                                ->dehydrateStateUsing(fn (string $state): string => ucwords($state))
-                                ->label('Unit no., floor, building, street'),
-                            ])->columns(2),
-                        Wizard\Step::make('Appointment Details')
-                            ->icon('heroicon-s-user')
-                            ->schema([
+                                ->default($user->fullname),
+                                Forms\Components\Hidden::make('age')
+                                ->default($user->age),
+                                Forms\Components\Hidden::make('gender')
+                                ->default($user->gender),
+                                Forms\Components\Hidden::make('phone')
+                                ->default($user->phone),
+                                Forms\Components\Hidden::make('province')
+                                ->default($user->province),
+                                Forms\Components\Hidden::make('city')
+                                ->default($user->city),
+                                Forms\Components\Hidden::make('barangay')
+                                ->default($user->barangay),
+                                Forms\Components\Hidden::make('unit')
+                                ->default($user->unit),
                                 Forms\Components\Select::make('service_id')
                                 ->relationship('Service', 'name')
                                 ->label('Select your Service')
@@ -247,9 +162,14 @@ class AppointmentPatientResource extends Resource
                                     return $disabledDates;
                                 })
                                 ->native(false),
+                                Forms\Components\TimePicker::make('time')
+                                ->required()
+                                ->hoursStep(2)
+                                ->minutesStep(15)
+                                ->seconds(false)
+                                ->placeholder('--:--')
+                                ->label('Appointment Time'),
                             ])->columns(2),
-                            ])
-                            ])
             ]);
     }
 
@@ -443,11 +363,11 @@ class AppointmentPatientResource extends Resource
                                                 return "{$record->last}, {$record->first} {$record->middle}";
                                             }),
                                         Infolists\Components\TextEntry::make('age')
-                                            ->label('Contact Number'),
+                                            ->label('Age'),
                                         Infolists\Components\TextEntry::make('gender')
-                                            ->label('Contact Number'),
+                                            ->label('Gender'),
                                         Infolists\Components\TextEntry::make('Phone')
-                                            ->label('Contact Number'),
+                                            ->label('Phone number'),
                                     ])
                                 ]),
                         ]),

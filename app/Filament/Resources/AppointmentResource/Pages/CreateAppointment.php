@@ -9,6 +9,7 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateAppointment extends CreateRecord
 {
     protected static string $resource = AppointmentResource::class;
+    protected static bool $canCreateAnother = false;
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');

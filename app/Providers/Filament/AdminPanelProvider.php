@@ -21,9 +21,17 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Validation\Rules\Password;
+use App\Filament\Auth\Register;
 use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
 use Swis\Filament\Backgrounds\ImageProviders\MyImages;
+use Afsakar\FilamentOtpLogin\FilamentOtpLoginPlugin;
+use Filament\Support\Facades\FilamentView;
+use Rupadana\FilamentAnnounce\FilamentAnnouncePlugin;
+use Filament\View\PanelsRenderHook;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Blade;
+
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -35,11 +43,11 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->passwordReset()
-            ->registration()
+            ->registration(Register::class)
             ->brandLogo(asset('storage/logo.png'))
             ->brandLogoHeight('10rem')
             ->sidebarFullyCollapsibleOnDesktop()
-            ->emailVerification()
+            // ->emailVerification()
             ->colors([
                 'primary' => Color::Indigo,
                 // 'success' => Color::Lime,
@@ -70,7 +78,12 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->favicon(asset('storage/logo.png'))
-            ->plugin(
+            ->plugins([
+                // FilamentView::registerRenderHook(
+                //     PanelsRenderHook::PAGE_START,
+                //     fn (): View => view('warning-banner'),
+                //     scopes: \App\Filament\Resources\UserResource::class,
+                // ),
                 BreezyCore::make()
                 ->avatarUploadComponent(fn() => FileUpload::make('avatar_url')->disk('public'))
                 ->enableTwoFactorAuthentication(
@@ -89,12 +102,9 @@ class AdminPanelProvider extends PanelProvider
                             ->uncompromised(3)],
                     requiresCurrentPassword: true,
                 ),
-                FilamentBackgroundsPlugin::make()
-                ->imageProvider(
-                    MyImages::make()
-                        ->directory('images/swisnl/filament-backgrounds/curated-by-swis/bg.png')
-                )
-            ,
-            );
+                // FilamentAnnouncePlugin::make()
+                // ->pollingInterval('30s')
+                // ->defaultColor(Color::Blue)
+            ]);
     }
 }

@@ -24,8 +24,6 @@ class ListUsers extends ListRecords
     {
         return [
             'all' => Tab::make(),
-            'Staff' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('role_id', '3')),
             'Doctor' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('role_id', '2')),
             'Dentist' => Tab::make()

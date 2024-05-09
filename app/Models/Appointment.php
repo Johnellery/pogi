@@ -22,6 +22,7 @@ class Appointment extends Model
         'city',
         'province',
         'phone',
+        'fullname',
         'fee',
         'date',
         'status',
@@ -30,7 +31,6 @@ class Appointment extends Model
         'doctor_user_id',
         'note',
         'time',
-        'fullname',
         'finished'
     ];
     protected $dates = ['date'];

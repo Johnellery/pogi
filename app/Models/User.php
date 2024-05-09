@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-class User extends Authenticatable implements  MustVerifyEmail, HasAvatar
+class User extends Authenticatable implements HasAvatar
 {
     use HasFactory, Notifiable, SoftDeletes , TwoFactorAuthenticatable;
 
@@ -28,6 +28,21 @@ class User extends Authenticatable implements  MustVerifyEmail, HasAvatar
         'password',
         'role_id',
         'avatar_url',
+        'first',
+        'middle',
+        'last',
+        'age',
+        'gender',
+        'unit',
+        'barangay',
+        'city',
+        'province',
+        'phone',
+        'fullname',
+        'otp',
+        'remember_token',
+        'email_verified_at',
+        'expired',
     ];
 
     /**

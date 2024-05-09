@@ -26,13 +26,16 @@ use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use HasanAhani\FilamentOtpInput\Components;
+
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $activeNavigationIcon = 'heroicon-s-user-group';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 20;
+
     protected static ?string $navigationGroup = 'Settings';
 
     public static function form(Form $form): Form
@@ -54,7 +57,7 @@ class UserResource extends Resource
                     ->maxLength(255),
                     Forms\Components\Select::make('role_id')
                     ->options(function () {
-                        return Role::whereIn('id', [2, 3, 4, 5])->pluck('name', 'id');
+                        return Role::whereIn('id', [2, 4, 5])->pluck('name', 'id');
                     })
                     ->label('Role')
                     ->native(false)
@@ -80,7 +83,16 @@ class UserResource extends Resource
                     ->revealable()
                     ->placeholder('Confirm your password')
                     ->maxLength(255),
+                    Components\OtpInput::make('otp')
+                    ->numberInput(6)
+                    ->required()
+                    ->afterStateUpdated(function (string $state){
+                        dd($state);
+                        // submit form or save record
+                    })
+                    ->label('Otp'),
                     ])->columns(2)
+
             ]);
     }
 

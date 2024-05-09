@@ -57,6 +57,7 @@ class AvailableResource extends Resource
         $user = Auth::user();
         return $form
             ->schema([
+                Forms\Components\Section::make([
                 Forms\Components\Hidden::make('user_id')
                 ->default($user->id),
                 Forms\Components\DatePicker::make('date')
@@ -80,6 +81,7 @@ class AvailableResource extends Resource
                 TextInput::make('note')
                 ->placeholder('Enter your notes')
                 ->label('Add notes'),
+                ])
             ]);
     }
 

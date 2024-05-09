@@ -15,11 +15,13 @@ class AppointmentStatsOverview extends BaseWidget
     protected function getStats(): array
     {
         $user = Auth::user();
-        $currentDate = Carbon::now();
-        $todayAppointmentsCount = Appointment::whereDate('date', $currentDate)
-        ->where('status', 'approved')
-        ->count();
-        $total = Appointment::whereDate('date', '>=', $currentDate)
+        $currentDates = Carbon::today();
+        $todayAppointmentsCount = Appointment::
+            where('status', 'approved')
+            ->where('date', '=', $currentDates->toDateString())
+            ->count();
+
+        $total = Appointment::whereDate('date', '>=', $currentDates)
         ->where('status', 'approved')
         ->count();
         $pending = Appointment::where('status', 'pending')
@@ -45,21 +47,5 @@ class AppointmentStatsOverview extends BaseWidget
     {
         return 3;
     }
-    // public function fetchEvents(array $fetchInfo): array
-    // {
-    //     return Event::query()
-    //         ->where('starts_at', '>=', $fetchInfo['start'])
-    //         ->where('ends_at', '<=', $fetchInfo['end'])
-    //         ->get()
-    //         ->map(
-    //             fn (Event $event) => [
-    //                 'title' => $event->id,
-    //                 'start' => $event->starts_at,
-    //                 'end' => $event->ends_at,
-    //                 'url' => EventResource::getUrl(name: 'view', parameters: ['record' => $event]),
-    //                 'shouldOpenUrlInNewTab' => true
-    //             ]
-    //         )
-    //         ->all();
-    // }
+
 }

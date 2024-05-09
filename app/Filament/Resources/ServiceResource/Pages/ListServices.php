@@ -17,6 +17,7 @@ class ListServices extends ListRecords
     {
         return [
             Actions\CreateAction::make()
+            ->disableCreateAnother()
             ->label('Add new Service'),
         ];
     }

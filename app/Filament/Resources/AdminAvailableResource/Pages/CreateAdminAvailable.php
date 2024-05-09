@@ -9,6 +9,7 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateAdminAvailable extends CreateRecord
 {
     protected static string $resource = AdminAvailableResource::class;
+    protected static bool $canCreateAnother = false;
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');

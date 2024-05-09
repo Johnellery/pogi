@@ -58,6 +58,7 @@ class AdminAvailableResource extends Resource
         $user = Auth::user();
         return $form
             ->schema([
+                Forms\Components\Section::make([
                 Forms\Components\Select::make('user_id')
                 ->relationship('User', 'name')
                 ->label('Select your Doctor/Dentist')
@@ -92,6 +93,7 @@ class AdminAvailableResource extends Resource
                 TextInput::make('note')
                 ->placeholder('Enter your notes')
                 ->label('Add notes'),
+                ])
             ]);
     }
 

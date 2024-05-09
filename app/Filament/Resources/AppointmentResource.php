@@ -143,7 +143,6 @@ class AppointmentResource extends Resource
                     'primary' => 'Not Attended',
                     'warning' => 'Pending',
                     'danger' => 'Cancelled',
-
                 ]),
             ])
             ->filters([
@@ -178,21 +177,11 @@ class AppointmentResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\Action::make('Approved')
-                    ->form([
-                        TimePicker::make('time')
-                        ->required()
-                        ->hoursStep(2)
-                        ->minutesStep(15)
-                        ->seconds(false)
-                        ->placeholder('--:--')
-                        ->label('Appointment Time'),
-                    ])
-                    // ->url(fn (Appointment $record) => route('approved.approved', $record))
-                    // ->successNotificationTitle('Appointment Status notice send successfully')
+                    ->url(fn (Appointment $record) => route('approved', $record))
+
+                    ->successNotificationTitle('Appointment Status notice send successfully')
                     ->action(function (Appointment $record, $data) {
-                        $time = $data['time'];
-                        $record->update(['status' => 'approved',
-                                        'time' => $time,]);
+                        $record->update(['status' => 'approved']);
                     })
                     ->visible(function () {
                         $user = Auth::user();
@@ -203,9 +192,8 @@ class AppointmentResource extends Resource
                     ->color('success')
                     ->icon('heroicon-o-check-circle'),
                     Tables\Actions\Action::make('Cancelled')
-                    ->action(function (Appointment $record, $data) {
-                        $record->update(['status' => 'cancelled', 'finished' => 'cancelled',]);
-                    })
+                    ->url(fn (Appointment $record) => route('cancelled', $record))
+                    ->successNotificationTitle('Appointment Status notice send successfully')
                     ->visible(function () {
                         $user = Auth::user();
                         return $user->role->name === 'Staff' || $user->role->name === 'Admin'  || $user->role->name === 'Dentist'  || $user->role->name === 'Doctor'  || $user->role->name === 'Patient';
@@ -307,11 +295,11 @@ class AppointmentResource extends Resource
                                                 return "{$record->last}, {$record->first} {$record->middle}";
                                             }),
                                         Infolists\Components\TextEntry::make('age')
-                                            ->label('Contact Number'),
+                                            ->label('Age'),
                                         Infolists\Components\TextEntry::make('gender')
-                                            ->label('Contact Number'),
+                                            ->label('Gender'),
                                         Infolists\Components\TextEntry::make('Phone')
-                                            ->label('Contact Number'),
+                                            ->label('Phone number'),
                                     ])
                                 ]),
                         ]),

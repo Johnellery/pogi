@@ -176,7 +176,7 @@ body {
                     <p>Facebook page: <a href="https://www.facebook.com/a.m.santosdentalclinic	">A.M. Santos Dental Clinic</a></p>
                     <p>Cellphone Number: <a href="tel:+639187772298">+639187772298</a></p>
                     <p>Location: Rocka Avenue, Rocka Village II, Tabang, Plaridel, Bulacan</p>
-                    <p>Google Maps: <a href="https://maps.app.goo.gl7kJH19s3WZj392jh7">View on Google Maps</a></p>
+                    <p>Google Maps: <a href="https://www.google.com/maps/place/A.M.+Santos+Dental+Clinic,+Rocka+Village+II,+Rocka+Ave,+Plaridel,+Bulacan/data=!4m2!3m1!1s0x339653731ad347fd:0xe108b9de57234db?utm_source=mstt_1&entry=gps&g_ep=CAESCTExLjczLjMwNhgAIIgnKgBCAlBI">View on Google Maps</a></p>
                 </div>
             </div>
 

@@ -22,11 +22,11 @@ class TodayAppointment extends BaseWidget
 
             if ($user->role->name === 'Admin'  || $user->role->name === 'Staff') {
                 $query->where('status', 'approved')
-                      ->whereDate('date', $currentDate);
+                      ->whereDate('date', $currentDate->toDateString());
             } elseif ($user->role->name === 'Doctor' || $user->role->name === 'Dentist') {
                 $query->where('doctor_user_id', $user->id)
                       ->where('status', 'approved')
-                      ->whereDate('date', $currentDate);
+                      ->whereDate('date', $currentDate->toDateString());
             }
             return $query;
         })

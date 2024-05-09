@@ -54,7 +54,7 @@ class DatabaseSeeder extends Seeder
         foreach ($appointments as $appointment) {
             Appointment::factory()->$appointment()->create();
         }
-        User::factory()->count(50)->create();
+        User::factory()->count(80)->create();
     }
 
 }
